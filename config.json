@@ -1,0 +1,214 @@
+{
+    "client_id": "12345",
+    "actions": [
+        "coerce_all_columns_to_data_type_string",
+        "trim_whitespace_from_all_columns",
+        "create_new_columns_from_source_columns",
+        "rename_column_headers",
+        "run_functions_on_columns",
+        "add_columns_with_default_values",
+        "truncate_columns_longer_than_max_length",
+        "sort_column_order",
+        "drop_columns_that_are_not_needed"
+    ],
+    "columns": [
+        {
+            "name": "Survey Designator",
+            "max_length": 8,
+            "col_index": 0,
+            "default_value": "D1234"
+        },
+        {
+            "name": "Client ID",
+            "max_length": 7,
+            "col_index": 1,
+            "default_value": "12345"
+        },
+        {
+            "name": "Last Name",
+            "source_column_name": "Patient Last Name",
+            "max_length": 25,
+            "col_index": 2,
+            "func": "has_characters"
+        },
+        {
+            "name": "Middle Initial",
+            "max_length": 1,
+            "col_index": 3,
+            "default_value": ""
+        },
+        {
+            "name": "First Name",
+            "source_column_name": "Patient First Name",
+            "max_length": 20,
+            "col_index": 4,
+            "func": "has_characters"
+        },
+        {
+            "name": "Address 1",
+            "old_name": "Patient Address Line 1",
+            "max_length": 40,
+            "col_index": 5,
+            "func": "address"
+        },
+        {
+            "name": "Address 2",
+            "old_name": "Patient Address Line 2",
+            "max_length": 40,
+            "col_index": 6,
+            "func": "address"
+        },
+        {
+            "name": "City",
+            "old_name": "Patient City",
+            "max_length": 25,
+            "col_index": 7,
+            "func": "city"
+        },
+        {
+            "name": "State",
+            "old_name": "Patient State",
+            "max_length": 2,
+            "col_index": 8,
+            "func": "state_initials"
+        },
+        {
+            "name": "ZIP Code",
+            "old_name": "Patient Zip Code",
+            "max_length": 10,
+            "col_index": 9,
+            "func": "zip_code"
+        },
+        {
+            "name": "Telephone Number",
+            "old_name": "Patient Phone Number",
+            "max_length": 12,
+            "col_index": 10,
+            "func": "phone"
+        },
+        {
+            "name": "Mobile Number",
+            "max_length": 12,
+            "col_index": 11,
+            "default_value": ""
+        },
+        {
+            "name": "Gender",
+            "old_name": "Patient Gender",
+            "max_length": 1,
+            "col_index": 12,
+            "func": "gender"
+        },
+        {
+            "name": "Date of Birth",
+            "old_name": "Patient DOB",
+            "max_length": 10,
+            "col_index": 13,
+            "func": "transform_date"
+        },
+        {
+            "name": "Medical Record Number",
+            "old_name": "MRN",
+            "max_length": 20,
+            "col_index": 14
+        },
+        {
+            "name": "Unique ID",
+            "old_name": "Patient Unique ID",
+            "max_length": 20,
+            "col_index": 15
+        },
+        {
+            "name": "Location Code",
+            "max_length": 50,
+            "col_index": 16,
+            "default_value": "1"
+        },
+        {
+            "name": "Location Name",
+            "old_name": "Site Location",
+            "max_length": 50,
+            "col_index": 17,
+            "func": "has_characters"
+        },
+        {
+            "name": "Attending Physician NPI",
+            "old_name": "NPI",
+            "max_length": 50,
+            "col_index": 18,
+            "func": "numbers_only"
+        },
+        {
+            "name": "Attending Physician Name",
+            "old_name": "Provider",
+            "max_length": 50,
+            "col_index": 19,
+            "func": "flip_name"
+        },
+        {
+            "name": "Provider type",
+            "max_length": 50,
+            "col_index": 20,
+            "default_value": "Physician"
+        },
+        {
+            "name": "Provider specialty",
+            "max_length": 50,
+            "col_index": 21,
+            "default_value": "Ophthalmology"
+        },
+        {
+            "name": "Site address 1",
+            "old_name": "Site Location Address 1",
+            "max_length": 40,
+            "col_index": 22,
+            "default_value": "12345 Main Street"
+        },
+        {
+            "name": "Site address 2",
+            "old_name": "Site Location Address 2",
+            "max_length": 40,
+            "col_index": 23,
+            "default_value": "Unit 1"
+        },
+        {
+            "name": "Site city",
+            "old_name": "Site Location City",
+            "max_length": 25,
+            "col_index": 24,
+            "default_value": "Boston"
+        },
+        {
+            "name": "Site state",
+            "old_name": "Site Location State",
+            "max_length": 2,
+            "col_index": 25,
+            "default_value": "MA"
+        },
+        {
+            "name": "Site zip",
+            "old_name": "Site Location Zip",
+            "max_length": 10,
+            "col_index": 26,
+            "default_value": "01234"
+        },
+        {
+            "name": "Visit or Admit Date",
+            "old_name": "Last Visit Date",
+            "max_length": 10,
+            "col_index": 27,
+            "func": "transform_date"
+        },
+        {
+            "name": "E.O.R Indicator",
+            "max_length": 1,
+            "col_index": 28,
+            "default_value": "$"
+        },
+        {
+            "name": "Patient Language",
+            "col_index": 29,
+            "drop_column": true
+        }
+    ]
+}
