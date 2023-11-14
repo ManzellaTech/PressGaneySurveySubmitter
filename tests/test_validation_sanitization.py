@@ -14,6 +14,7 @@ from pgsurvey import (
     language,
     numbers_only,
     phone,
+    sanitize_phone_with_truncation,
     state_initials,
     to_yn_from_yesno,
     transform_date,
@@ -217,10 +218,11 @@ def test_email_email_undeliverable_error(test_input):
         assert email(test_input)
 
 @pytest.mark.parametrize('test_input, expected', [
-    ('1234567890', '123-456-7890'),
-    ('11234567890', '123-456-7890'),
+    ('9234567890', '923-456-7890'),
+    ('19234567890', '923-456-7890'),
+    ('+1 (923) 456-7890', '923-456-7890'),
     ('98765 - 43210', '987-654-3210'),
-    ('(123) 456-7890', '123-456-7890'),
+    ('(923) 456-7890', '923-456-7890'),
     ('', ''),
     ('None', ''),
     ('-', ''),
@@ -228,14 +230,21 @@ def test_email_email_undeliverable_error(test_input):
 def test_phone_valid(test_input, expected):
     assert phone(test_input) == expected
 
-@pytest.mark.parametrize('test_input', [1, [], 1.2, True, None])
-def test_phone_type_error(test_input):
-    with pytest.raises(TypeError):
-        assert phone(test_input)
-
-@pytest.mark.parametrize('test_input', ['123', '123-4567'])
-def test_phone_value_error(test_input):
-    with pytest.raises(ValueError):
+@pytest.mark.parametrize('test_input, exception', [
+                        (1, pytest.raises(TypeError)),
+                        ([], pytest.raises(TypeError)),
+                        (1.2, pytest.raises(TypeError)),
+                        (True, pytest.raises(TypeError)),
+                        (None, pytest.raises(TypeError)),
+                        ('987-654-3210 x312', pytest.raises(ValueError)),
+                        ('11234567890', pytest.raises(ValueError)),
+                        ('1234567890', pytest.raises(ValueError)),
+                        ('11234567890 x321', pytest.raises(ValueError)),
+                        ('123', pytest.raises(ValueError)),
+                        ('123-4567', pytest.raises(ValueError)),
+                        ])
+def test_phone_error(test_input, exception):
+    with exception:
         assert phone(test_input)
 
 @pytest.mark.parametrize('test_input, expected', [
@@ -308,3 +317,33 @@ def test_get_validator_func_from_name_key_error(test_input):
 def test_get_validator_func_from_name_type_error(test_input):
     with pytest.raises(TypeError):
         assert get_validator_func_from_name(test_input)
+
+@pytest.mark.parametrize('test_input, expected', [
+    ('2234567890', '223-456-7890'),
+    ('12234567890', '223-456-7890'),
+    ('98765 - 43210', '987-654-3210'),
+    ('(223) 456-7890', '223-456-7890'),
+    ('(223) 456-7890 x3', '223-456-7890'),
+    ('12234567890 ext 10', '223-456-7890'),
+    ('98765 - 43210 ext. 91', '987-654-3210'),
+    ('', ''),
+    ('None', ''),
+    ('-', ''),
+])
+def test_sanitize_phone_with_truncation_valid(test_input, expected):
+    assert sanitize_phone_with_truncation(test_input) == expected
+
+@pytest.mark.parametrize('test_input, exception', [
+                        (1, pytest.raises(TypeError)),
+                        ([], pytest.raises(TypeError)),
+                        (1.2, pytest.raises(TypeError)),
+                        (True, pytest.raises(TypeError)),
+                        (None, pytest.raises(TypeError)),
+                        ('11234567890', pytest.raises(ValueError)),
+                        ('11234567890 x321', pytest.raises(ValueError)),
+                        ('123', pytest.raises(ValueError)),
+                        ('123-4567', pytest.raises(ValueError)),
+                        ])
+def test_sanitize_phone_with_truncation_type_error(test_input, exception):
+    with exception:
+        assert sanitize_phone_with_truncation(test_input)

@@ -75,6 +75,7 @@ def get_connection_options(transmit_option: TransmitOption,
             raise ValueError
 
 def read_config(config_serialized: dict) -> tuple[str, list[Column], list[str]]:
+    """Parse and return the deserialized contents of the config .JSON file.    """
     client_id = config_serialized['client_id']
     actions = config_serialized['actions']
     columns = []

@@ -107,13 +107,31 @@ def phone(v: str) -> str:
     n = numbers_only(v)
     if len(n) == 0:
         return n
-    elif len(n) == 11 and n.startswith('1'):
-        return format_phone(n[1:])
-    elif len(n) == 10:
+    if n.startswith('1'):
+        n = n[1:]
+    if n.startswith('1'):
+        raise ValueError('US area codes cannot start with the number "1".')
+    if len(n) == 10:
         return format_phone(n)
-    else:
-        raise ValueError('Phone number must contain 10 digits. '
-                        f'The following is invalid: {v}')
+    raise ValueError('Phone number must contain 10 digits. '
+                     f'The following is invalid: {v}')
+
+def sanitize_phone_with_truncation(v: str) -> str:
+    """
+    Sanitize a phone number.  Truncate the phone number if longer than the
+    maximum length of 10 characters.
+    """
+    n = numbers_only(v)
+    if len(n) == 0:
+        return n
+    if n.startswith('1'):
+        n = n[1:]
+    if n.startswith('1'):
+        raise ValueError('US area codes cannot start with the number "1".')
+    if len(n) >= 10:
+        return format_phone(n[0:10])
+    raise ValueError('Phone number must contain 10 digits. '
+                         f'The following is invalid: {v}')
 
 def address(v: str) -> str:
     """Parse address text."""
@@ -216,6 +234,7 @@ def get_validator_func_from_name(name: str) -> Callable:
         'state_initials': state_initials,
         'zip_code': zip_code,
         'phone': phone,
+        'sanitize_phone_with_truncation': sanitize_phone_with_truncation,
         'gender': gender,
         'transform_date': transform_date,
         'numbers_only': numbers_only,

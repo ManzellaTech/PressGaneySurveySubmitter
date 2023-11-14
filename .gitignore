@@ -8,6 +8,7 @@ executable/
 tests/__pycache__/
 .config/
 pyinstaller_command.txt
+README_EXE.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
